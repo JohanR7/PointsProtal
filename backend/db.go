@@ -1,23 +1,31 @@
 package main
 
 import (
-	"database/sql"
-	_ "github.com/lib/pq"
-	"log"
+	"context"
+	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var db *sql.DB
+func initMongoDB() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-func InitDB() {
+	// Replace with your MongoDB connection string
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	var err error
-	db, err = sql.Open("postgres", "host=localhost port=5432 user=postgres password=password dbname=gradingreact sslmode=disable")
+	client, err = mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		log.Fatal("Error connecting to database:", err)
+		return err
 	}
 
-	if err = db.Ping(); err != nil {
-		log.Fatal("Database unreachable:", err)
+	// Ping the database to verify connection
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		return err
 	}
 
-	log.Println("Database connected successfully")
+	db = client.Database("schoolEvents") // Replace with your database name
+	return nil
 }
