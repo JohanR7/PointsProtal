@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,21 +10,40 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { login } = useAuth(); // 👈 From your AuthContext
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8085/login", {
+      const response = await axios.post("https://09da6b2c-7088-466c-b94a-4662e3e1bd28.mock.pstmn.io/login", {
         email,
         password,
       });
 
+      console.log(response);
+
       if (response.status === 200) {
+        const token = response.data.token;
+        const role = response.data.role; // 👈 Get role from response
+
+        if (!token || !role) {
+          throw new Error("Invalid login response: missing token or role");
+        }
+
+        // Call AuthContext login to save token and user info
+        login(token, { email, role });
+
         alert("Login successful!");
-        localStorage.setItem("authToken", response.data.token);
-        navigate("/dashboard"); 
+
+        // Navigate based on role
+        if (role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/faculty");
+        }
       }
     } catch (err) {
       setLoading(false);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function CreateTeacher() {
+function AddTeacher() {
   const [teacher, setTeacher] = useState({
     teacher_name: '',
     email: '',
@@ -78,22 +78,6 @@ function CreateTeacher() {
           onChange={handleChange}
           className="w-full border p-2 rounded"
         />
-        <input
-          type="text"
-          name="position"
-          placeholder="Position"
-          value={teacher.position}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="text"
-          name="profile_photo"
-          placeholder="Profile Photo URL"
-          value={teacher.profile_photo}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
           Create
         </button>
@@ -102,4 +86,4 @@ function CreateTeacher() {
   );
 }
 
-export default CreateTeacher;
+export default AddTeacher;
