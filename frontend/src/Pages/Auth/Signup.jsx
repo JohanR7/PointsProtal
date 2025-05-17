@@ -85,21 +85,6 @@ const Signup = () => {
               minLength={6}
             />
           </div>
-
-          <div className="mb-4">
-            <label htmlFor="role" className="block text-sm font-medium text-gray-600 mb-2">Role</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              required
-            >
-              <option value="teacher">Teacher</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
           <div className="mb-6">
             <button
               type="submit"
